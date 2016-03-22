@@ -87,8 +87,12 @@ class APIv2Adapter(base.DesignateAdapter):
         else:
             base_uri = cls.BASE_URI
 
-        return {'self': '%s%s/%s' %
-                (base_uri, cls._get_path(request), object.id)}
+        if cls.__name__ == 'RecordSetAPIv2Adapter':
+            path = cls._get_path(request, object)
+        else:
+            path = cls._get_path(request)
+
+        return {'self': '%s%s/%s' % (base_uri, path, object.id)}
 
     @classmethod
     def _get_path(cls, request):
